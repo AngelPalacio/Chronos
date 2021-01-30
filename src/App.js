@@ -38,13 +38,12 @@ const Cronometro = (props) => {
 
   const getCurrentValue = () => {
     if (!startTime) {
-      return "00:00:00";
+      return "00:00";
     }
 
     const diffMiliseconds = new Date().getTime() - startTime;
     const diffSeconds = diffMiliseconds / 1000;
     const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
 
     const fiveSecondValue = (Math.round(diffSeconds) % 60) % 5;
     setProgress(((diffMiliseconds % 5000) * 100) / 5000 + 10);
@@ -61,9 +60,8 @@ const Cronometro = (props) => {
 
     const strSeconds = format(diffSeconds % 60);
     const strMinutes = format(diffMinutes % 60);
-    const strHours = format(diffHours % 60);
 
-    return `${strHours}:${strMinutes}:${strSeconds}`;
+    return `${strMinutes}:${strSeconds}`;
   };
 
   useInterval(() => {
@@ -81,10 +79,10 @@ const Cronometro = (props) => {
   const format = (num) => num.toFixed(0).padStart(2, "0");
 
   return (
-    <div className="cronometro">
+    <div id="cronometro">
       <div id="buttons">
         <a id="startButton" onClick={start}>
-          {startTime ? "Pause" : "Start"}
+          {startTime ? "Reset" : "Start"}
         </a>
       </div>
       <div id="value">
@@ -106,18 +104,14 @@ const makeClickClackSound = (makeClick) => {
 
 const ProgressBar = ({ value }) => {
   return (
-    <div className="fiveSecondsProgressBar">
+    <div id="progressBar">
       <div style={{ width: `${value}%` }}></div>
     </div>
   );
 };
 
 function App() {
-  return (
-    <div className="App">
-      <Cronometro />
-    </div>
-  );
+  return <Cronometro />;
 }
 
 export default App;
