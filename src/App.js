@@ -51,8 +51,7 @@ const Cronometro = (props) => {
     if (fiveSecondValue === 0) {
       if (!isBeeping) {
         setIsBeeping(true);
-        if (fiveSecondValue === 0) makeBeepSound();
-        else makeClickClackSound(fiveSecondValue % 2 === 0);
+        makeBeepSound();
       }
     } else {
       setIsBeeping(false);
