@@ -3,6 +3,8 @@ import beep from "./sounds/softBeep.wav";
 import click from "./sounds/click.wav";
 import clack from "./sounds/clack.wav";
 import "./App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 
 const beepSound = new Audio(beep);
 const clickSound = new Audio(click);
@@ -30,6 +32,7 @@ function useInterval(callback, delay) {
 
 const Cronometro = (props) => {
   const [startTime, setStartTime] = useState();
+  const [isMuted, setisMuted] = useState(false);
   const [isBeeping, setIsBeeping] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentValue, setCurrentValue] = useState("");
@@ -51,7 +54,7 @@ const Cronometro = (props) => {
     if (fiveSecondValue === 0) {
       if (!isBeeping) {
         setIsBeeping(true);
-        makeBeepSound();
+        if (!isMuted) makeBeepSound();
       }
     } else {
       setIsBeeping(false);
@@ -67,7 +70,7 @@ const Cronometro = (props) => {
     setCurrentValue(getCurrentValue());
   }, 100);
 
-  const start = () => {
+  const toggleStart = () => {
     if (startTime) {
       setStartTime(0);
     } else {
@@ -75,13 +78,39 @@ const Cronometro = (props) => {
     }
   };
 
+  const toggleMute = () => {
+    setisMuted(!isMuted);
+  };
+
   const format = (num) => num.toFixed(0).padStart(2, "0");
+  //<i className="fa fa-play fa-spin" />
 
   return (
     <div id="cronometro">
       <div id="buttons">
-        <a id="startButton" onClick={start}>
-          {startTime ? "Reset" : "Start"}
+        <a id="startButton" onClick={toggleStart}>
+          {startTime ? (
+            <>
+              <i className="fa fa-stop" />
+              &nbsp; "Reset"
+            </>
+          ) : (
+            <>
+              <i className="fa fa-play" />
+              &nbsp; "Start"
+            </>
+          )}
+        </a>
+        <a id="muteButton" onClick={toggleMute}>
+          {isMuted ? (
+            <>
+              <i className="fa fa-volume-off" />
+            </>
+          ) : (
+            <>
+              <i className="fa fa-volume-up" />
+            </>
+          )}
         </a>
       </div>
       <div id="value">
